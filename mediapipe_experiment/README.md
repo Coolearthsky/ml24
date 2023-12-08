@@ -18,7 +18,12 @@ The only thing getting any attention is the "mediapipe" project.
 
 To play with the code here, run these in order:
 
-  * mediapipe-setup.sh
-  * mediapipe-viz.py (to see the training examples, note the filenames inside)
-  * mediapipe-train.py
-  * mediapipe-run.py (note the filenames inside, you can use this for various inputs and models)
+* mediapipe-setup.sh
+* mediapipe-viz.py (to see the training examples, note the filenames inside)
+* mediapipe-train.py
+* mediapipe-run.py (note the filenames inside, you can use this for various inputs and models)
+
+More useful links:
+
+* [Mediapipe ignores negative images](https://github.com/google/mediapipe/issues/4423), which makes fine-tuning basically impossible .. it's hard to believe this is actually true.
+* [Tensorflow will never fix tflite-model-maker](https://github.com/tensorflow/tensorflow/issues/60431).
