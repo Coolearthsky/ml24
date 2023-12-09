@@ -1,3 +1,4 @@
+.*.swp
 bccd_coco_tfrecords/*
 BCC.v1-bccd.coco/*
 exported_model/*
