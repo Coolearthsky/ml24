@@ -42,6 +42,7 @@ from pycoral.adapters import detect
 from pycoral.utils.dataset import read_label_file
 from pycoral.utils.edgetpu import make_interpreter
 
+import copy
 
 
 # Global variables to calculate FPS
@@ -151,6 +152,7 @@ def run(
     if common.input_details(interpreter, 'dtype') != np.uint8:
       raise ValueError('Only support uint8 input type.')
     size = common.input_size(interpreter)
+    print("input size ", size)
     params = common.input_details(interpreter, 'quantization_parameters')
     scale = params['scales']
     zero_point = params['zero_points']
@@ -172,6 +174,11 @@ def run(
         while True:
             request = camera.capture_request()
             try:
+
+
+
+
+
                 #print("request0")
                 # logic goes here
                 #buffer = request.make_buffer("lores")
@@ -193,12 +200,23 @@ def run(
 
                 coral_image = cv2.resize(rgb_image, size)
 
-                cheight, cwidth, _ = coral_image.shape
-                _, scale = common.set_resized_input(interpreter, (cwidth, cheight), lambda size: cv2.resize(coral_image, size))
+                #cheight, cwidth, _ = coral_image.shape
+                #_, scale = common.set_resized_input(interpreter, (cwidth, cheight), lambda size: cv2.resize(coral_image, size))
+                common.set_input(interpreter, coral_image)
 
                 interpreter.invoke()
-                objs = detect.get_objects(interpreter, 0.5, scale)
-                print(objs)
+
+# https://github.com/tensorflow/tensorflow/issues/51591
+                #objs = detect.get_objects(interpreter, 0.5)
+                #print("objs ",objs.shape)
+                boxes = copy.copy(common.output_tensor(interpreter, 1))[0]
+                #classes = common.output_tensor(interpreter, 3)
+                scores = copy.copy(common.output_tensor(interpreter, 0))[0]
+                #count = common.output_tensor(interpreter, 2)
+                print("boxes ", boxes.shape)
+                print("box0 ", boxes[0])
+                print("scores ",  scores.shape)
+                print("score0 ", scores[0])
 
 
 
