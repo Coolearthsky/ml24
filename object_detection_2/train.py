@@ -27,6 +27,12 @@ from official.vision.ops.preprocess_ops import resize_and_crop_image
 from official.vision.utils.object_detection import visualization_utils
 from official.vision.dataloaders.tf_example_decoder import TfExampleDecoder
 
+
+# visualization_utils sets 'Agg' i guess because it is usually run headless?
+matplotlib.use('TkAgg')
+
+
+
 pp = pprint.PrettyPrinter(indent=4) # Set Pretty Print Indentation
 print(tf.__version__) # Check the version of tensorflow used
 
@@ -34,8 +40,8 @@ print(tf.__version__) # Check the version of tensorflow used
 
 
 
-train_data_input_path = './android_figurine/train-00000-of-00001.tfrecord'
-valid_data_input_path = './android_figurine/valid-00000-of-00001.tfrecord'
+train_data_input_path = './tfrecords/train-00000-of-00001.tfrecord'
+valid_data_input_path = './tfrecords/validation-00000-of-00001.tfrecord'
 model_dir = './trained_model/'
 export_dir ='./exported_model/'
 
@@ -152,19 +158,14 @@ for images, labels in task.build_inputs(exp_config.task.train_data).take(1):
 category_index={
     1: {
         'id': 1,
-        'name': 'Platelets'
+        'name': 'android'
        },
     2: {
         'id': 2,
-        'name': 'RBC'
-       },
-    3: {
-        'id': 3,
-        'name': 'WBC'
+        'name': 'pig_android'
        }
 }
 tf_ex_decoder = TfExampleDecoder()
-
 
 
 def show_batch(raw_records, num_of_examples):
